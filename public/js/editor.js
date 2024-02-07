@@ -72,7 +72,8 @@ publishBtn.addEventListener('click', () => {
             title: blogTitleField.value,
             article: articleFeild.value,
             bannerImage: bannerPath,
-            publishedAt: `${date.getDate()} ${months[date.getMonth()]} ${date.getFullYear()}`
+            publishedAt: `${date.getDate()} ${months[date.getMonth()]} ${date.getFullYear()}`,
+            author: auth.currentUser.email.split("@")[0]
         })
         .then(() => {
             location.href = `/${docName}`;
@@ -80,5 +81,11 @@ publishBtn.addEventListener('click', () => {
         .catch((err) => {
             console.error(err);
         })
+    }
+})
+
+auth.onAuthStateChanged((user) => {
+    if(!user){
+        location.replace("/admin");
     }
 })
