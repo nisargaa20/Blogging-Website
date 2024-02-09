@@ -55,6 +55,8 @@ let months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oc
 
 publishBtn.addEventListener('click', () => {
     if(articleFeild.value.length && blogTitleField.value.length){
+
+     
     
         let letters = 'abcdefghijklmnopqrstuvwxyz';
         let blogTitle = blogTitleField.value.split(" ").join("-");
@@ -89,3 +91,23 @@ auth.onAuthStateChanged((user) => {
         location.replace("/admin");
     }
 })
+
+
+let blogID = location.pathname.split("/");
+blogID.shift();
+
+if(blogID[0] != "editor"){
+    let docRef = db.collection("blogs").doc(decodeURI(blogID[0]));
+    docRef.get().then((doc) => {
+     if(doc.exists){
+        let data = doc.data();
+        bannerPAth = data.bannerImage;
+        banner.style.backgroundImage = `url(${bannerPath})`;
+        blogTitleField.value = data.title;
+        articleFeild.value = data.article;
+     }
+     else{
+        location.replace("/");
+     }
+    })
+}
